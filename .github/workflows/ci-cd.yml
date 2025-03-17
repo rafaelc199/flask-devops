@@ -1,0 +1,23 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v3
+
+      - name: Login no Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "rafaellaw199" --password-stdin
+
+      - name: Build da imagem Docker
+        run: docker build -t rafaellaw199/flask-devops:latest .
+
+      - name: Push da imagem para o Docker Hub
+        run: docker push rafaellaw199/flask-devops:latest
